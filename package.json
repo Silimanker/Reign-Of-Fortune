@@ -1,0 +1,14 @@
+{
+  "name": "reign-of-fortune",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reign of Fortune - Xianxia scatter-pay prototype (Django + Tailwind CSS)",
+  "scripts": {
+    "css": "tailwindcss -i ./game/static/game/src/input.css -o ./game/static/game/css/app.css",
+    "css:watch": "tailwindcss -i ./game/static/game/src/input.css -o ./game/static/game/css/app.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}
