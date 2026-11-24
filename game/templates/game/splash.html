@@ -1,0 +1,60 @@
+{% extends "game/base.html" %}
+{% load static %}
+{% block title %}Reign of Fortune{% endblock %}
+{% block chrome %}{% endblock %}
+
+{% block content %}
+<section class="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-5 py-16 text-center">
+
+  <!-- drifting motes: pure transform/opacity, parked under reduced motion -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <span class="mote" style="left:8%;bottom:-4%;width:5px;height:5px;animation-duration:15s;animation-delay:0s"></span>
+    <span class="mote" style="left:19%;bottom:-4%;width:3px;height:3px;animation-duration:19s;animation-delay:2s"></span>
+    <span class="mote" style="left:31%;bottom:-4%;width:6px;height:6px;animation-duration:17s;animation-delay:5s"></span>
+    <span class="mote" style="left:44%;bottom:-4%;width:3px;height:3px;animation-duration:21s;animation-delay:1s"></span>
+    <span class="mote" style="left:57%;bottom:-4%;width:5px;height:5px;animation-duration:16s;animation-delay:6s"></span>
+    <span class="mote" style="left:68%;bottom:-4%;width:4px;height:4px;animation-duration:20s;animation-delay:3s"></span>
+    <span class="mote" style="left:79%;bottom:-4%;width:6px;height:6px;animation-duration:18s;animation-delay:7s"></span>
+    <span class="mote" style="left:91%;bottom:-4%;width:3px;height:3px;animation-duration:22s;animation-delay:4s"></span>
+  </div>
+
+  <div class="rise relative flex flex-col items-center" style="animation-delay:.05s">
+    <!-- seal -->
+    <div class="relative mb-8 h-32 w-32 sm:h-40 sm:w-40">
+      <div class="absolute inset-0 rounded-full border border-gold/35"></div>
+      <div class="seal-turn absolute -inset-3 rounded-full border border-dashed border-gold/25"></div>
+      <div class="absolute inset-0 overflow-hidden rounded-full bg-[radial-gradient(circle_at_34%_28%,rgba(243,208,131,.22),transparent_62%)] shadow-[0_0_70px_-12px_rgba(224,170,62,.6)]">
+        <img src="{% static 'game/icons/dao_emblem.png' %}" alt="Yin-Yang Emblem"
+             class="h-full w-full scale-90 object-contain">
+      </div>
+    </div>
+
+    <p class="mb-5 text-[11px] font-semibold uppercase tracking-[0.42em] text-gold/80 sm:text-xs">
+      Xianxia Scatter-Pay Realm
+    </p>
+
+    <h1 class="title-display gold-text text-[clamp(2.5rem,11vw,6.5rem)] leading-[0.94]">
+      <span class="block">Reign</span>
+      <span class="block text-[0.56em] tracking-[0.3em]">of Fortune</span>
+    </h1>
+
+    <p class="mt-7 max-w-[46ch] text-[15px] leading-relaxed text-mist-dim sm:text-base">
+      Wager Spirit Stones across a 42-sector wheel of herbs, treasures and
+      heavenly lightning.
+    </p>
+
+    <div class="mt-10 flex flex-col items-center gap-4">
+      <a href="{% url 'game:menu' %}" class="btn btn-gold px-9 py-3.5 text-[15px] tracking-[0.14em] uppercase">
+        Enter the Realm
+      </a>
+      <a href="{% url 'game:paytable' %}" class="text-[13px] text-mist-faint underline-offset-4 transition hover:text-mist hover:underline">
+        Inspect the paytable
+      </a>
+    </div>
+  </div>
+
+  <p class="absolute inset-x-0 bottom-6 text-[11px] uppercase tracking-[0.28em] text-mist-faint/70">
+    Prototype build &middot; Django &middot; 42 sectors
+  </p>
+</section>
+{% endblock %}

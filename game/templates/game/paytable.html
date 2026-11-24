@@ -1,0 +1,222 @@
+{% extends "game/base.html" %}
+{% load static humanize %}
+{% block title %}Paytable – Reign of Fortune{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 sm:py-12">
+  <p class="text-[11px] font-semibold uppercase tracking-[0.34em] text-gold/80">Odds</p>
+  <h1 class="title-display mt-3 text-3xl leading-tight text-mist sm:text-4xl">Paytable &amp; probabilities</h1>
+  <p class="mt-3 max-w-[70ch] text-sm leading-relaxed text-mist-dim">
+    Payouts use the same reel weights that draw the grid. Long-run return is not
+    a promise for an individual session; a spin can pay less than its stake.
+  </p>
+
+  {# mode switcher #}
+  <nav class="mt-7 flex flex-wrap gap-2">
+    {% for m in modes %}
+    <a href="?mode={{ m.slug }}"
+       class="chip {% if m.slug == mode.slug %}chip-gold{% endif %} hover:border-gold/60">{{ m.name }}</a>
+    {% endfor %}
+  </nav>
+
+  {# summary stats #}
+  <section class="mt-5 grid gap-px overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-5">
+    <div class="bg-ink-2 p-5">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Table</p>
+      <p class="title-display mt-2 text-lg leading-tight text-mist">{{ mode.name }}</p>
+      <p class="mt-1 text-xs text-mist-dim">{{ mode.sect }} &middot; {{ mode.risk }}</p>
+    </div>
+    <div class="bg-ink-2 p-5">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Measured return</p>
+      <p class="num mt-2 text-3xl font-semibold text-jade">{{ sim_rtp }}%</p>
+      <p class="mt-1 text-xs text-mist-dim">500,000-spin Monte Carlo estimate</p>
+    </div>
+    <div class="bg-ink-2 p-5">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Any payout</p>
+      <p class="num mt-2 text-3xl font-semibold text-mist">{{ sim_hit }}%</p>
+      <p class="mt-1 text-xs text-mist-dim">any payout, including less than stake</p>
+    </div>
+    <div class="bg-ink-2 p-5">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Returned more than stake</p>
+      <p class="num mt-2 text-3xl font-semibold text-jade">{{ sim_profit }}%</p>
+      <p class="mt-1 text-xs text-mist-dim">payout exceeded stake (not RTP)</p>
+    </div>
+    <div class="bg-ink-2 p-5">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Kept by the mountain</p>
+      <p class="num mt-2 text-3xl font-semibold text-gold">{{ house_edge }}%</p>
+      <p class="mt-1 text-xs text-mist-dim">long-run house edge</p>
+    </div>
+  </section>
+
+  <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
+    <div class="flex flex-col gap-6">
+
+      {# ── ladder symbols ── #}
+      <section class="panel overflow-hidden p-5 sm:p-6">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 class="title-display text-lg text-mist">Symbol payouts</h2>
+          <span class="text-[11px] uppercase tracking-[0.16em] text-mist-faint">×stake, scatter-pay</span>
+        </div>
+        <p class="mt-1 text-xs text-mist-faint">Pays when 8 or more identical symbols land anywhere on the 6&times;5 grid.</p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full min-w-[560px] text-sm">
+            <thead>
+              <tr class="text-[11px] uppercase tracking-[0.16em] text-mist-faint">
+                <th class="pb-2 text-left font-semibold">Symbol</th>
+                <th class="pb-2 text-right font-semibold">Cell %</th>
+                <th class="pb-2 text-right font-semibold">Hit %</th>
+                <th class="pb-2 text-right font-semibold">8–9 pays</th>
+                <th class="pb-2 text-right font-semibold">10–11 pays</th>
+                <th class="pb-2 text-right font-semibold">12+ pays</th>
+                <th class="pb-2 text-right font-semibold">Return</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line/70">
+              {% for row in sym_stats %}
+              <tr>
+                <td class="py-3 pr-3">
+                  <div class="flex items-center gap-2.5">
+                    {% if row.icon %}
+                    <img src="{{ row.icon }}" alt="" class="h-8 w-8 shrink-0 object-contain">
+                    {% else %}
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-line text-sm font-bold"
+                          style="color:{{ row.color }}">{{ row.glyph }}</span>
+                    {% endif %}
+                    <div class="min-w-0">
+                      <p class="truncate font-medium text-mist">{{ row.name }}</p>
+                      <p class="truncate text-[11px] text-mist-faint">{{ row.note }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="num py-3 text-right text-mist-dim">{{ row.cell_pct }}%</td>
+                <td class="num py-3 text-right text-mist">{{ row.hit_pct }}%</td>
+                <td class="num py-3 text-right font-semibold {% if row.tier == 'high' %}text-gold-lt{% elif row.tier == 'low' %}text-jade{% else %}text-mist-dim{% endif %}">
+                  {{ row.pays.0 }}&times;
+                </td>
+                <td class="num py-3 text-right font-semibold {% if row.tier == 'high' %}text-gold-lt{% elif row.tier == 'low' %}text-jade{% else %}text-mist-dim{% endif %}">
+                  {{ row.pays.1 }}&times;
+                </td>
+                <td class="num py-3 text-right font-semibold {% if row.tier == 'high' %}text-gold-lt{% elif row.tier == 'low' %}text-jade{% else %}text-mist-dim{% endif %}">
+                  {{ row.pays.2 }}&times;
+                </td>
+                <td class="num py-3 text-right font-semibold {% if row.return_pct > 5 %}text-jade{% else %}text-mist-dim{% endif %}">
+                  {{ row.return_pct }}%
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="border-t-2 border-line">
+                <td colspan="6" class="pt-3 text-[11px] uppercase tracking-[0.14em] text-mist-faint">Base return (pre-cascade, pre-bonus)</td>
+                <td class="num pt-3 text-right font-semibold text-mist">{{ total_return }}%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="mt-4 text-xs leading-relaxed text-mist-faint">
+          Return shows what each symbol contributes to the expected payout per spin,
+          assuming uniform independent cell draws. Cascades and the Heavenly Tribulation
+          bonus account for the rest of the measured {{ sim_rtp }}% return.
+        </p>
+      </section>
+
+      {# ── scatter / bonus ── #}
+      <section class="panel overflow-hidden p-5 sm:p-6">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 class="title-display text-lg text-mist">Special symbols</h2>
+          <span class="text-[11px] uppercase tracking-[0.16em] text-violet">Bonus triggers</span>
+        </div>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          {% for sym in scatter_syms %}
+          <div class="flex items-start gap-3 rounded-xl border border-violet/30 bg-violet/8 p-4">
+            <img src="{{ sym.url }}" alt="" class="h-12 w-12 shrink-0 object-contain">
+            <div class="min-w-0">
+              <p class="font-semibold text-violet">{{ sym.name }}</p>
+              <p class="mt-1 text-xs leading-snug text-mist-faint">{{ sym.note }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="mt-4 rounded-xl border border-line bg-ink-2/60 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-sm font-semibold text-mist">{{ scatter_min }}+ scatters anywhere</p>
+            <span class="chip !border-violet/50 !text-violet">{{ scat_stats.odds }}</span>
+          </div>
+          <p class="mt-2 text-xs leading-snug text-mist-faint">
+            Combined probability of either scatter symbol: <strong class="text-mist">{{ scat_stats.any_pct }}%</strong> per cell.
+            Trigger probability ({{ scatter_min }}+): <strong class="text-violet">{{ scat_stats.trigger_pct }}%</strong> of spins.
+          </p>
+          <p class="mt-2 text-xs leading-snug text-mist-faint">
+            Bonus grants: 10 spins (4 scatters) · 15 spins (5) · 20 spins (6) · 25 spins (7+).
+            Multiplier grows +1 each cascade, capped at ×5. Flying Sword turns wild for the duration.
+          </p>
+          <p class="mt-2 text-xs leading-snug text-mist-faint">
+            Simulated bonus frequency: <strong class="text-mist">{{ sim_feat }}</strong> spins.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    {# ── right panel: key stats ── #}
+    <div class="flex flex-col gap-6">
+      <section class="panel p-5 sm:p-6">
+        <h2 class="title-display text-lg text-mist">Table summary</h2>
+        <dl class="mt-4 grid gap-3 text-sm">
+          <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+            <dt class="text-mist-dim">Stake range</dt>
+            <dd class="num font-semibold text-mist">{{ mode.min_stake|intcomma }} – {{ mode.max_stake|intcomma }} SS</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+            <dt class="text-mist-dim">Measured RTP</dt>
+            <dd class="num font-semibold text-jade">{{ sim_rtp }}%</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+            <dt class="text-mist-dim">House edge</dt>
+            <dd class="num font-semibold text-gold">{{ house_edge }}%</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+            <dt class="text-mist-dim">Hit frequency</dt>
+            <dd class="num font-semibold text-mist">{{ sim_hit }}%</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+            <dt class="text-mist-dim">Avg win (winning spins)</dt>
+            <dd class="num font-semibold text-mist">{{ sim_avg_win }}&times; stake</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-3">
+            <dt class="text-mist-dim">Bonus frequency</dt>
+            <dd class="num font-semibold text-violet">{{ sim_feat }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="panel p-5 sm:p-6">
+        <h2 class="title-display text-base text-mist">How scatter-pay works</h2>
+        <div class="mt-4 space-y-3">
+          <div class="flex items-start gap-3 rounded-lg border border-line/60 bg-ink-3/60 p-3">
+            <span class="shrink-0 rounded-full border border-jade/40 bg-jade/10 px-2 py-0.5 text-[11px] font-semibold text-jade">8–9</span>
+            <p class="text-xs leading-snug text-mist-faint">Any 8 or 9 of the same symbol anywhere → pays the first tier multiplier.</p>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-line/60 bg-ink-3/60 p-3">
+            <span class="shrink-0 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[11px] font-semibold text-gold">10–11</span>
+            <p class="text-xs leading-snug text-mist-faint">Ten or eleven → second-tier multiplier. Winning cells are removed; fresh symbols drop in.</p>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-line/60 bg-ink-3/60 p-3">
+            <span class="shrink-0 rounded-full border border-ember/40 bg-ember/10 px-2 py-0.5 text-[11px] font-semibold text-ember">12+</span>
+            <p class="text-xs leading-snug text-mist-faint">Twelve or more → top-tier multiplier. Multiple symbols can win simultaneously from one grid.</p>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-line/60 bg-ink-3/60 p-3">
+            <span class="shrink-0 rounded-full border border-mist-faint/40 bg-ink-4 px-2 py-0.5 text-[11px] font-semibold text-mist-faint">Cascade</span>
+            <p class="text-xs leading-snug text-mist-faint">After each win, removed cells collapse, new symbols fall in, and the grid is scored again — up to 8 times per spin.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="flex gap-3">
+        <a href="{% url 'game:modes' %}" class="btn btn-ghost flex-1 py-3 text-sm text-center">Tables</a>
+        <a href="{% url 'game:slot' mode.slug %}" class="btn btn-gold flex-1 py-3 text-sm text-center">Play {{ mode.name }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "game/base.html" %}
+{% load static humanize l10n %}
+{% block title %}Spatial Ring - Reign of Fortune{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 sm:py-12">
+  <p class="text-[11px] font-semibold uppercase tracking-[0.34em] text-gold/80">Wallet</p>
+  <h1 class="title-display mt-3 text-3xl text-mist sm:text-4xl">Spatial Ring</h1>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)]">
+
+    <!-- Balance -->
+    <section class="panel relative overflow-hidden p-6 sm:p-8">
+      <div class="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(224,170,62,.18),transparent_65%)]"></div>
+
+      <div class="relative">
+        <p class="label">Balance held</p>
+        <p class="num mt-2 text-5xl font-semibold leading-none text-gold-lt sm:text-6xl">
+          {{ spirit_stones|intcomma }}<span class="ml-3 text-lg text-mist-faint">SS</span>
+        </p>
+        <p class="mt-3 text-sm text-mist-dim">
+          Philippine Peso value at parity:
+          <span class="num font-semibold text-jade">&#8369;{{ spirit_stones|intcomma }}</span>
+        </p>
+
+        <div class="rule mt-7 grid gap-5 pt-6 sm:grid-cols-3">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Conversion</p>
+            <p class="num mt-1 text-lg text-mist">1 SS = &#8369;1.00</p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Free spins</p>
+            <p class="num mt-1 text-lg text-mist">{{ player.free_spins }}</p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Fortune Charm</p>
+            <p class="mt-1 text-lg {% if player.charm_active %}text-gold-lt{% else %}text-mist{% endif %}">
+              {% if player.charm_active %}Ready &middot; 2&times;{% else %}None{% endif %}
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="{% url 'game:topup' %}" class="btn btn-gold px-6 py-2.5 text-sm tracking-[0.12em] uppercase">Top Up</a>
+          <a href="{% url 'game:modes' %}" class="btn btn-ghost px-6 py-2.5 text-sm">Back to the trials</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cashout -->
+    <section class="panel h-fit p-6 sm:p-7">
+      <div class="flex items-baseline justify-between gap-4">
+        <h2 class="title-display text-xl text-mist">Cash Out</h2>
+        {% if pending %}
+        <span class="chip chip-gold">1 pending</span>
+        {% endif %}
+      </div>
+      <p class="mt-2 text-sm leading-relaxed text-mist-dim">
+        Withdraw Spirit Stones as pesos. Minimum {{ cashout_min|intcomma }} SS.
+      </p>
+
+      <form action="{% url 'game:cashout_submit' %}" method="post" class="mt-5">
+        {% csrf_token %}
+
+        <div class="mt-5">
+          <label class="label" for="cashout-amount">Amount</label>
+          <div class="relative">
+            <input class="field num pr-16" type="number" id="cashout-amount" name="amount"
+                   min="{{ cashout_min|unlocalize }}" max="{{ spirit_stones|unlocalize }}"
+                   step="1" inputmode="numeric" placeholder="{{ cashout_min|intcomma }}">
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs uppercase tracking-[0.16em] text-mist-faint">SS</span>
+          </div>
+          <p class="mt-1.5 text-xs text-mist-faint">
+            Ring holds {{ spirit_stones|intcomma }} SS.
+          </p>
+        </div>
+
+        <div class="mt-5">
+          <label class="label" for="cashout-method">Destination</label>
+          <select class="field" id="cashout-method" name="method">
+            {% for m in methods %}<option value="{{ m }}">{{ m }}</option>{% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-gold mt-6 w-full py-3 text-sm tracking-[0.14em] uppercase">
+          Request Cashout
+        </button>
+        <p class="mt-3 text-xs leading-relaxed text-mist-faint">
+          Prototype build: requests are queued in the ledger and settle instantly.
+        </p>
+      </form>
+    </section>
+  </div>
+
+  <!-- Ledger -->
+  <section class="panel mt-6 p-6 sm:p-7">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 class="title-display text-xl text-mist">Ledger</h2>
+      <span class="text-xs uppercase tracking-[0.18em] text-mist-faint">Most recent 60</span>
+    </div>
+
+    {% if transactions %}
+    <ul class="mt-5 divide-y divide-line/70">
+      {% for t in transactions %}
+      <li class="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3">
+        <span class="num w-[112px] shrink-0 text-xs text-mist-faint">{{ t.created_at|date:"M d, H:i" }}</span>
+
+        <span class="chip {% if t.kind == 'win' or t.kind == 'topup' or t.kind == 'bonus' %}chip-gold{% endif %}">
+          {{ t.get_kind_display }}
+        </span>
+        {% if t.status == 'pending' %}<span class="chip">Pending</span>{% endif %}
+
+        <span class="min-w-[140px] flex-1 truncate text-sm text-mist-dim">{{ t.note }}</span>
+
+        <span class="num ml-auto text-sm font-semibold
+          {% if t.kind == 'win' or t.kind == 'topup' or t.kind == 'bonus' %}text-jade{% else %}text-mist{% endif %}">
+          {% if t.kind == 'win' or t.kind == 'topup' or t.kind == 'bonus' %}+{% else %}&minus;{% endif %}{{ t.amount|intcomma }}
+        </span>
+
+        <span class="num w-full text-right text-xs text-mist-faint sm:w-[132px] sm:text-left">
+          &rarr; {{ t.balance_after|intcomma }}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="mt-5 rounded-xl border border-dashed border-line px-5 py-10 text-center">
+      <p class="text-sm text-mist-dim">No movement yet.</p>
+      <a href="{% url 'game:topup' %}" class="btn btn-ghost mt-4 px-5 py-2 text-sm">Fund the ring</a>
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

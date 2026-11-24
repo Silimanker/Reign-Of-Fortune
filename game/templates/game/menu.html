@@ -1,0 +1,132 @@
+{% extends "game/base.html" %}
+{% load static humanize %}
+{% block title %}Sanctum - Reign of Fortune{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 sm:py-12">
+
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
+
+    <!-- Identity + ring balance -->
+    <aside class="panel flex flex-col justify-between p-6 sm:p-7">
+      <div>
+        <p class="text-[11px] font-semibold uppercase tracking-[0.34em] text-gold/80">Sanctum</p>
+        <h1 class="title-display mt-3 text-2xl text-mist">{{ player.name }}</h1>
+        <p class="mt-1 text-sm text-mist-dim">Outer court &middot; rank unproven</p>
+
+        <div class="rule mt-6 pt-6">
+          <p class="label">Spatial Ring</p>
+          <p class="num text-4xl font-semibold text-gold-lt">{{ spirit_stones|intcomma }}<span class="ml-2 text-base text-mist-faint">SS</span></p>
+          <p class="mt-1.5 text-sm text-mist-dim">= &#8369;{{ spirit_stones|intcomma }} at parity</p>
+        </div>
+
+        {% if player.favor_percent > 0 %}
+        <div class="mt-6">
+          <div class="flex items-baseline justify-between">
+            <p class="label !mb-0">Heaven's Favor</p>
+            <span class="num text-xs text-mist-dim">{{ player.favor_percent }}%</span>
+          </div>
+          <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-ink-4">
+            <div class="h-full rounded-full bg-gold transition-all duration-500" style="width:{{ player.favor_percent }}%"></div>
+          </div>
+          <p class="mt-2 text-xs text-mist-faint">Fills on losses. At full, the next win pays 1.5&times;.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="mt-8 grid gap-2">
+        <a href="{% url 'game:ring' %}" class="btn btn-ghost w-full py-2.5 text-sm">Open Spatial Ring</a>
+        <a href="{% url 'game:topup' %}" class="btn btn-gold w-full py-2.5 text-sm">Top Up Spirit Stones</a>
+      </div>
+    </aside>
+
+    <!-- Actions -->
+    <div class="grid gap-6">
+
+      <a href="{% url 'game:modes' %}"
+         class="panel group relative flex min-h-[240px] flex-col justify-end overflow-hidden p-6 sm:p-8">
+        <div class="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(224,170,62,.24),transparent_65%)] transition duration-500 group-hover:scale-110"></div>
+        <div class="pointer-events-none absolute right-6 top-6 hidden opacity-90 sm:block">
+          <img src="{% static 'game/icons/heavenly_tribulation.png' %}" alt=""
+               class="h-28 w-28 object-contain drop-shadow-[0_10px_30px_rgba(224,170,62,.45)] transition duration-500 group-hover:-translate-y-1">
+        </div>
+        <p class="relative text-[11px] font-semibold uppercase tracking-[0.34em] text-gold/85">Three trials await</p>
+        <h2 class="relative title-display mt-3 text-3xl leading-tight text-mist sm:text-4xl">Enter the Trials</h2>
+        <p class="relative mt-3 max-w-[44ch] text-sm leading-relaxed text-mist-dim">
+          Choose a table, set your stake, and let the grid decide whether the
+          mountain favours you today.
+        </p>
+        <span class="btn btn-gold relative mt-6 self-start px-7 py-2.5 text-sm tracking-[0.12em] uppercase">
+          Choose a table
+        </span>
+      </a>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <a href="{% url 'game:topup' %}" class="panel group p-6 transition hover:border-gold/50">
+          <div class="flex items-start justify-between">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-mist-faint">Deposit</span>
+            <span class="num text-xs text-jade">1 SS = &#8369;1</span>
+          </div>
+          <h3 class="title-display mt-4 text-xl text-mist">Top Up</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mist-dim">
+            Move pesos into the ring as Spirit Stones and start the session funded.
+          </p>
+          <span class="mt-5 inline-block text-sm text-gold-lt transition group-hover:translate-x-0.5">Add stones &rarr;</span>
+        </a>
+
+        <a href="{% url 'game:ring' %}" class="panel group p-6 transition hover:border-gold/50">
+          <div class="flex items-start justify-between">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-mist-faint">Withdraw</span>
+            {% if pending_cashout %}<span class="chip chip-gold">Pending</span>{% endif %}
+          </div>
+          <h3 class="title-display mt-4 text-xl text-mist">Cash Out</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mist-dim">
+            Convert the ring back to Philippine Pesos at parity, then review the ledger.
+          </p>
+          <span class="mt-5 inline-block text-sm text-gold-lt transition group-hover:translate-x-0.5">Open the ring &rarr;</span>
+        </a>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <a href="{% url 'game:paytable' %}" class="panel flex items-center justify-between gap-4 p-5 transition hover:border-gold/50">
+          <div>
+            <h3 class="title-display text-base text-mist">Paytable &amp; Odds</h3>
+            <p class="mt-1 text-xs text-mist-dim">Cell weights, payouts, house margin — 6×5 grid.</p>
+          </div>
+          <span class="num text-sm text-gold">6&times;5</span>
+        </a>
+
+        <form action="{% url 'game:reset' %}" method="post" class="panel flex items-center justify-between gap-4 p-5">
+          {% csrf_token %}
+          <div>
+            <h3 class="title-display text-base text-mist">Reset Demo</h3>
+            <p class="mt-1 text-xs text-mist-dim">Fresh ring, clean ledger.</p>
+          </div>
+          <button type="submit" class="btn btn-ghost px-4 py-2 text-xs">Reset</button>
+        </form>
+      </div>
+
+      {% if recent %}
+      <section class="panel p-6">
+        <div class="flex items-baseline justify-between">
+          <h3 class="title-display text-base text-mist">Last spins</h3>
+          <a href="{% url 'game:paytable' %}" class="text-xs text-mist-faint hover:text-mist">How the odds work</a>
+        </div>
+        <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+          {% for r in recent %}
+          <li class="flex items-center gap-3 rounded-lg border border-line/70 bg-ink-2/70 px-3 py-2">
+            <img src="{% static 'game/icons/' %}{{ r.result_key }}.png" alt="" class="h-7 w-7 object-contain" onerror="this.style.opacity='0'">
+            <span class="min-w-0 flex-1 truncate text-sm text-mist">{{ r.mode_name }}</span>
+            <span class="num text-xs {% if r.is_win %}text-jade{% else %}text-mist-faint{% endif %}">
+              {% if r.is_win %}+{{ r.payout|intcomma }}{% else %}-{{ r.stake|intcomma }}{% endif %}
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "game/base.html" %}
+{% load static humanize %}
+{% block title %}Trials – Reign of Fortune{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 sm:py-12">
+  <p class="text-[11px] font-semibold uppercase tracking-[0.34em] text-gold/80">Choose a table</p>
+  <h1 class="title-display mt-3 text-3xl leading-tight text-mist sm:text-4xl">Three trials, one grid</h1>
+  <p class="mt-3 max-w-[64ch] text-sm leading-relaxed text-mist-dim">
+    The 6&times;5 scatter grid never changes its symbols — only the house margin does.
+    A gentler table returns more of every stake; the ascension table keeps more, but
+    lets the ring run deep.
+  </p>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-3">
+    {% for info in modes_info %}{% with m=info.mode %}
+    <article class="panel flex flex-col p-6 sm:p-7
+                    {% if forloop.last %}border-gold/40{% endif %}">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-mist-faint">{{ m.sect }}</p>
+          <h2 class="title-display mt-2.5 text-2xl leading-tight text-mist">{{ m.name }}</h2>
+        </div>
+        <span class="chip {% if m.risk == 'Gentle' %}!border-jade/50 !text-jade{% elif m.risk == 'Volatile' %}!border-ember/50 !text-ember{% else %}chip-gold{% endif %}">
+          {{ m.risk }}
+        </span>
+      </div>
+
+      <p class="mt-4 text-sm leading-relaxed text-mist-dim">{{ m.description }}</p>
+
+      <dl class="rule mt-6 grid gap-3 pt-6 text-sm">
+        <div class="flex items-baseline justify-between gap-3">
+          <dt class="text-mist-dim">Stake range</dt>
+          <dd class="num font-semibold text-mist">{{ m.min_stake|intcomma }} &ndash; {{ m.max_stake|intcomma }} SS</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-3">
+          <dt class="text-mist-dim">Measured return</dt>
+          <dd class="num font-semibold text-jade">{{ m.sim_percent }}%</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-3">
+          <dt class="text-mist-dim">Any payout</dt>
+          <dd class="num font-semibold text-mist">{{ m.sim_hit_percent|floatformat:0 }}% of spins</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-3">
+          <dt class="text-mist-dim">Returned more than stake</dt>
+          <dd class="num font-semibold text-jade">{{ m.sim_profit_percent|floatformat:0 }}% of spins</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-3">
+          <dt class="text-mist-dim">Bonus (Heavenly Tribulation)</dt>
+          <dd class="num font-semibold text-violet">{{ m.feature_odds }}</dd>
+        </div>
+      </dl>
+
+      <a href="{% url 'game:slot' m.slug %}" class="btn btn-gold mt-7 w-full py-3 text-sm tracking-[0.14em] uppercase">
+        Enter {{ m.name }}
+      </a>
+    </article>
+    {% endwith %}{% endfor %}
+  </div>
+
+  <div class="panel mt-6 flex flex-wrap items-center justify-between gap-4 p-5">
+    <p class="max-w-[70ch] text-sm leading-relaxed text-mist-dim">
+      Figures are estimates from 500,000 simulated spins. “Any payout” can be less than the stake;
+      “Returned more than stake” is the share of spins that ended net-positive. See the
+      <a href="{% url 'game:paytable' %}" class="text-gold-lt underline-offset-4 hover:underline">paytable</a>.
+    </p>
+    <a href="{% url 'game:menu' %}" class="btn btn-ghost px-5 py-2.5 text-sm">Back to sanctum</a>
+  </div>
+</div>
+{% endblock %}
