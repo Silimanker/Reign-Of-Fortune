@@ -1,0 +1,68 @@
+{% load static humanize %}<!doctype html>
+<html lang="en-ph">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Reign of Fortune{% endblock %}</title>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <meta name="theme-color" content="#0b0c10">
+  <link rel="icon" href="{% static 'game/icons/dao_emblem.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="{% static 'game/css/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-[100dvh] antialiased">
+
+  {% block chrome %}
+  <header class="sticky top-0 z-40 border-b border-line/80 bg-ink/85 backdrop-blur-md">
+    <div class="mx-auto flex h-16 max-w-[1400px] items-center gap-6 px-4 sm:px-6">
+      <a href="{% url 'game:menu' %}" class="title-display text-[13px] leading-none text-gold-lt hover:text-gold sm:text-sm">
+        Reign<span class="text-mist-faint"> of </span>Fortune
+      </a>
+
+      <nav class="hidden items-center gap-1 md:flex">
+        {% url 'game:menu' as u %}<a href="{{ u }}" class="chip {% if request.path == u %}chip-gold{% endif %}">Sanctum</a>
+        {% url 'game:modes' as u %}<a href="{{ u }}" class="chip {% if request.path == u %}chip-gold{% endif %}">Trials</a>
+        {% url 'game:ring' as u %}<a href="{{ u }}" class="chip {% if request.path == u %}chip-gold{% endif %}">Spatial Ring</a>
+        {% url 'game:topup' as u %}<a href="{{ u }}" class="chip {% if request.path == u %}chip-gold{% endif %}">Top Up</a>
+        {% url 'game:paytable' as u %}<a href="{{ u }}" class="chip {% if request.path == u %}chip-gold{% endif %}">Paytable</a>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-3">
+        <a href="{% url 'game:ring' %}" class="group flex items-center gap-2 rounded-full border border-line bg-ink-3/80 px-3 py-1.5 transition hover:border-gold/60">
+          <span class="h-2 w-2 rounded-full bg-jade shadow-[0_0_10px_rgba(69,195,147,.9)]"></span>
+          <span class="num text-sm font-semibold text-mist group-hover:text-gold-lt" id="balanceValue">{{ spirit_stones|intcomma }}</span>
+          <span class="text-[11px] uppercase tracking-[0.16em] text-mist-faint">SS</span>
+        </a>
+      </div>
+    </div>
+  </header>
+  {% endblock %}
+
+  {% if messages %}
+  <div class="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center gap-2 p-4 sm:items-end sm:p-6" id="toasts">
+    {% for message in messages %}
+    <div class="result-pop pointer-events-auto flex max-w-md items-start gap-3 rounded-xl border border-line bg-ink-3 px-4 py-3 shadow-2xl" data-toast>
+      <span class="mt-1 h-2 w-2 shrink-0 rounded-full {% if message.tags == 'error' %}bg-ember{% else %}bg-jade{% endif %}"></span>
+      <p class="text-sm leading-snug text-mist">{{ message }}</p>
+      <button type="button" class="ml-2 text-mist-faint hover:text-mist" data-toast-close aria-label="Dismiss">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  {% block scripts %}{% endblock %}
+  <script>
+    document.querySelectorAll("[data-toast]").forEach(function (t) {
+      var close = function () { t.remove(); };
+      var btn = t.querySelector("[data-toast-close]");
+      if (btn) btn.addEventListener("click", close);
+      setTimeout(close, 6000);
+    });
+  </script>
+</body>
+</html>

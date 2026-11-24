@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+/* Templates and the small vanilla-JS bundle are the only class sources. */
+@source "../../../templates";
+@source "../js";
+
+/* ------------------------------------------------------------------ *
+ * Reign of Fortune tokens
+ * Palette is locked: ink neutrals + one gold accent. Jade marks gains,
+ * violet is reserved for the Special tier (data colour, not brand).
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0b0c10;
+  --color-ink-2: #101219;
+  --color-ink-3: #161923;
+  --color-ink-4: #1d212d;
+  --color-line: #2a2f3d;
+  --color-mist: #e8eaef;
+  --color-mist-dim: #a2a9b7;
+  --color-mist-faint: #737b8c;
+
+  --color-gold: #e0aa3e;
+  --color-gold-lt: #f3d083;
+  --color-gold-dk: #9a7220;
+  --color-jade: #45c393;
+  --color-ember: #d9604a;
+  --color-violet: #9d7bf0;
+
+  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-mist);
+    font-family: var(--font-sans);
+    /* Quiet mountain mist: one fixed layer, never on a scroll container. */
+    background-image:
+      radial-gradient(1100px 620px at 78% -12%, rgba(224, 170, 62, 0.09), transparent 62%),
+      radial-gradient(900px 520px at 6% 104%, rgba(69, 195, 147, 0.07), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: rgba(224, 170, 62, 0.3);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ---------- type ---------- */
+  .title-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .gold-text {
+    background: linear-gradient(178deg, #fff3d4 6%, #e0aa3e 44%, #a97b22 74%, #f3d083 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- surfaces ---------- */
+  .panel {
+    background: linear-gradient(168deg, rgba(29, 33, 45, 0.92), rgba(16, 18, 25, 0.94));
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    box-shadow: 0 24px 48px -32px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  }
+
+  .rule {
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* ---------- buttons: pill for actions, keeps shape on :active ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: transform 0.16s var(--ease-silk), background-color 0.16s ease,
+      border-color 0.16s ease, box-shadow 0.16s ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:active {
+    transform: scale(0.985);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-gold {
+    background: linear-gradient(180deg, #f3d083, #d99f31 58%, #b8842a);
+    color: #14100a;
+    box-shadow: 0 12px 28px -16px rgba(224, 170, 62, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  .btn-gold:hover:not(:disabled) {
+    box-shadow: 0 16px 34px -14px rgba(224, 170, 62, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--color-line);
+    color: var(--color-mist);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: #3b4354;
+  }
+
+  /* ---------- inputs: label sits above, never placeholder-as-label ---------- */
+  .field {
+    width: 100%;
+    background: rgba(11, 12, 16, 0.75);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    color: var(--color-mist);
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+  }
+  .field::placeholder {
+    color: var(--color-mist-faint);
+  }
+  .field:focus {
+    border-color: var(--color-gold);
+    background: rgba(11, 12, 16, 0.95);
+    outline: none;
+  }
+
+  .label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-mist-dim);
+    margin-bottom: 0.4rem;
+  }
+
+  /* ---------- chips & badges ---------- */
+  .chip {
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 999px;
+    padding: 0.34rem 0.72rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-mist-dim);
+    transition: all 0.16s ease;
+  }
+  .chip-gold {
+    border-color: rgba(224, 170, 62, 0.5);
+    color: var(--color-gold-lt);
+    background: rgba(224, 170, 62, 0.1);
+  }
+  /* ---------- bet panel controls ---------- */
+  .tab {
+    border-radius: 999px;
+    padding: 0.55rem 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-mist-faint);
+    transition: color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+    cursor: pointer;
+  }
+  .tab:hover {
+    color: var(--color-mist);
+  }
+  .tab.is-on {
+    background: linear-gradient(180deg, #f3d083, #d99f31);
+    color: #14100a;
+    box-shadow: 0 8px 18px -12px rgba(224, 170, 62, 0.95);
+  }
+
+  .bet-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-align: left;
+    border: 1px solid var(--color-line);
+    background: rgba(22, 25, 35, 0.55);
+    border-radius: 12px;
+    padding: 0.5rem 0.6rem;
+    transition: border-color 0.16s ease, background-color 0.16s ease,
+      box-shadow 0.16s ease, transform 0.12s var(--ease-silk);
+    cursor: pointer;
+  }
+  .bet-opt:hover:not(:disabled) {
+    border-color: #3d4658;
+    background: rgba(29, 33, 45, 0.85);
+  }
+  .bet-opt:active:not(:disabled) {
+    transform: scale(0.985);
+  }
+  .bet-opt:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .bet-opt-wide {
+    padding: 0.75rem 0.8rem;
+  }
+  .bet-opt.is-on {
+    border-color: var(--color-gold);
+    background: rgba(224, 170, 62, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(224, 170, 62, 0.4);
+  }
+
+  .opt-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+  .opt-cluster-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    object-fit: contain;
+    padding: 2px;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: var(--color-ink-3);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Slot grid cells
+ * ------------------------------------------------------------------ */
+.slot-cell {
+  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.25s ease;
+}
+.slot-cell.slot-win {
+  transform: scale(1.04);
+}
+.slot-cell.slot-spinning {
+  animation: slot-roll 0.28s ease-in-out infinite;
+}
+@keyframes slot-roll {
+  from { transform: translateY(-18%); filter: blur(2px); opacity: 0.55; }
+  to { transform: translateY(0); filter: blur(0); opacity: 1; }
+}
+
+/* Result banner drops in over the grid. */
+.result-pop {
+  animation: pop 0.5s var(--ease-silk) both;
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Splash
+ * ------------------------------------------------------------------ */
+.mote {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(243, 208, 131, 0.65);
+  filter: blur(1px);
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  from { transform: translateY(0) scale(1); opacity: 0; }
+  12% { opacity: 0.85; }
+  85% { opacity: 0.5; }
+  to { transform: translateY(-78vh) scale(0.4); opacity: 0; }
+}
+
+.rise {
+  animation: rise 0.9s var(--ease-silk) both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+
+.seal-turn {
+  animation: seal-turn 26s linear infinite;
+}
+@keyframes seal-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* Honour the OS setting: no drifting motes, no long animations. */
+@media (prefers-reduced-motion: reduce) {
+  .mote { display: none; }
+  .slot-cell { transition: none; }
+  .slot-cell.slot-spinning { animation: none; filter: none; }
+  .rise, .result-pop, .seal-turn { animation: none !important; }
+}
