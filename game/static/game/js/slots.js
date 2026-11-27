@@ -28,6 +28,11 @@
   var cascadeLabel = document.getElementById("cascadeLabel");
   var winMsg       = document.getElementById("winMsg");
   var lossMsg      = document.getElementById("lossMsg");
+  var winPopup     = document.getElementById("winPopup");
+  var winPopupLabel = document.getElementById("winPopupLabel");
+  var winPopupAmount = document.getElementById("winPopupAmount");
+  var winPopupMeta = document.getElementById("winPopupMeta");
+  var winPopupTimer = null;
   var favorBar     = document.getElementById("favorBar");
   var favorPct     = document.getElementById("favorPct");
   var bonusBar     = document.getElementById("bonusBar");
@@ -95,7 +100,7 @@
   function makeCell(key) {
     var sym = symMap[key] || {};
     var el = document.createElement("div");
-    el.className = "slot-cell slot-idle aspect-square rounded-xl border border-line/60 bg-ink-3/70 flex items-center justify-center relative overflow-hidden transition-all duration-200";
+    el.className = "slot-cell slot-idle aspect-square flex items-center justify-center relative overflow-hidden";
     el.setAttribute("role", "gridcell");
     setCellSymbol(el, key);
     return el;

@@ -12,10 +12,10 @@
   </p>
 
   {# mode switcher #}
-  <nav class="mt-7 flex flex-wrap gap-2">
+  <nav class="text-tabs mt-7" aria-label="Paytable table">
     {% for m in modes %}
     <a href="?mode={{ m.slug }}"
-       class="chip {% if m.slug == mode.slug %}chip-gold{% endif %} hover:border-gold/60">{{ m.name }}</a>
+       class="text-tab {% if m.slug == mode.slug %}is-active{% endif %}">{{ m.name }}</a>
     {% endfor %}
   </nav>
 

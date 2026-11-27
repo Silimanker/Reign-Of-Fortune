@@ -1,7 +1,7 @@
 """Reign of Fortune - reel tuner.
 
 Bisects the one number each table owns (``royal_mass``: the share of the 30
-cells spent on script tiles) until a Monte-Carlo of the *whole* game - cascades,
+cells spent on J-A tiles) until a Monte-Carlo of the *whole* game - cascades,
 the Heavenly Tribulation bonus, retriggers - lands on the table's RTP target.
 
 Run from the project root::

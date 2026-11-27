@@ -15,7 +15,7 @@ grid is scored again. That cascade repeats until nothing pays.
 
 House margin lives in the *reel distribution*, never in the paytable. Each
 table owns one number - ``royal_mass`` - the share of the 30 cells spent on
-the four script tiles (J Q K A) that barely pay. Push it up and the expensive
+the four J-A tiles (J Q K A) that barely pay. Push it up and the expensive
 ladder symbols get rare; push it down and they flood the grid. The tuner
 (``scripts/tune_slots.py``) bisects that one number per table until the
 measured return lands on the table's RTP target.
@@ -54,7 +54,7 @@ TIER_HIGH = "high"
 TIER_SPECIAL = "special"
 
 TIER_LABELS = {
-    TIER_ROYAL: "Script Tiles",
+    TIER_ROYAL: "J-A Tiles",
     TIER_LOW: "Spiritual Herbs",
     TIER_HIGH: "Treasures & Artifacts",
     TIER_SPECIAL: "Bonus",
@@ -82,7 +82,7 @@ class Symbol:
     tier: str
     color: str
     pays: tuple[float, float, float]      # 8-9, 10-11, 12+
-    icon: str = ""                        # png filename, empty for script tiles
+    icon: str = ""                        # png filename, empty for glyph-only tiles
     glyph: str = ""                       # rendered instead of an icon
     note: str = ""
 
@@ -99,17 +99,17 @@ class Symbol:
         return not self.scatter
 
 
-# The four script tiles are pure weight: they keep the ladder above them
+# The four J-A tiles are pure weight: they keep the ladder above them
 # rare enough to be affordable, while still paying enough to feel alive.
 ROYALS: tuple[Symbol, ...] = (
-    Symbol("royal_j", "Script J", TIER_ROYAL, "#737b8c", (0.4, 1.0, 2.5), "",
-           "J", "The lowest hand on the mountain."),
-    Symbol("royal_q", "Script Q", TIER_ROYAL, "#8a93a6", (0.5, 1.2, 3.0), "",
-           "Q", "A queen's favour, at a queen's price."),
-    Symbol("royal_k", "Script K", TIER_ROYAL, "#a2a9b7", (0.6, 1.5, 4.0), "",
-           "K", "Kings pay, but they are seldom seen in force."),
-    Symbol("royal_a", "Script A", TIER_ROYAL, "#c8cfdb", (0.8, 2.0, 5.0), "",
-           "A", "The strongest of the four script tiles."),
+    Symbol("royal_j", "J Tile", TIER_ROYAL, "#737b8c", (0.4, 1.0, 2.5),
+           "j.png", "", "The lowest hand on the mountain."),
+    Symbol("royal_q", "Q Tile", TIER_ROYAL, "#8a93a6", (0.5, 1.2, 3.0),
+           "q.png", "", "A queen's favour, at a queen's price."),
+    Symbol("royal_k", "K Tile", TIER_ROYAL, "#a2a9b7", (0.6, 1.5, 4.0),
+           "k.png", "", "Kings pay, but they are seldom seen in force."),
+    Symbol("royal_a", "A Tile", TIER_ROYAL, "#c8cfdb", (0.8, 2.0, 5.0),
+           "a.png", "", "The strongest of the four J-A tiles."),
 )
 
 # The eight ladder symbols, with the paytable exactly as written in the
@@ -163,7 +163,7 @@ LADDER_SHAPE = {
 def reel_weights(royal_mass: float) -> tuple[float, ...]:
     """Cell probability for every symbol, aligned with ``GRID_KEYS``.
 
-    ``royal_mass`` is the share of the grid spent on script tiles; the ladder
+    ``royal_mass`` is the share of the grid spent on J-A tiles; the ladder
     takes everything left over after the scatter mass is reserved.
     """
     ladder_mass = 1.0 - SCATTER_MASS - royal_mass

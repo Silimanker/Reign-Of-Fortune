@@ -78,7 +78,7 @@ scripts/
 ## Odds
 
 The paytable is derived, not hand-tuned. Each table owns one number —
-`royal_mass`, the share of the 30 cells spent on the four low-pay script
+`royal_mass`, the share of the 30 cells spent on the four low-pay J-A
 tiles. `python scripts/tune_slots.py` bisects it against a Monte-Carlo of the
 whole game (cascades, bonus, retriggers) until the measured return lands on
 the table's target. Re-run it after changing any paytable value:
