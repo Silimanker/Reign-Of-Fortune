@@ -20,7 +20,7 @@
   </nav>
 
   {# summary stats #}
-  <section class="mt-5 grid gap-px overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-5">
+  <section class="mt-5 grid gap-px overflow-hidden rounded-2xl border border-line bg-line/50 sm:grid-cols-2 lg:grid-cols-5">
     <div class="bg-ink-2 p-5">
       <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Table</p>
       <p class="title-display mt-2 text-lg leading-tight text-mist">{{ mode.name }}</p>
@@ -41,7 +41,7 @@
       <p class="num mt-2 text-3xl font-semibold text-jade">{{ sim_profit }}%</p>
       <p class="mt-1 text-xs text-mist-dim">payout exceeded stake (not RTP)</p>
     </div>
-    <div class="bg-ink-2 p-5">
+    <div class="bg-ink-2 p-5 sm:col-span-2 lg:col-span-1">
       <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Kept by the mountain</p>
       <p class="num mt-2 text-3xl font-semibold text-gold">{{ house_edge }}%</p>
       <p class="mt-1 text-xs text-mist-dim">long-run house edge</p>

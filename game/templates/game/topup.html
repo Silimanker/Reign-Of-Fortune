@@ -19,7 +19,7 @@
         <legend class="label">Choose an amount</legend>
         <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {% for p in presets %}
-          <label class="cursor-pointer rounded-xl border border-line bg-ink-2 px-3 py-3.5 text-center transition has-[:checked]:border-gold has-[:checked]:bg-gold/12 has-[:checked]:shadow-[0_0_0_1px_rgba(224,170,62,.45)] hover:border-mist-faint/60">
+          <label class="cursor-pointer rounded-xl border border-line bg-ink-2 px-3 py-3.5 text-center transition has-[:checked]:border-gold has-[:checked]:bg-gold/12 has-[:checked]:shadow-[0_0_0_1px_rgba(139,94,20,.45)] hover:border-mist-faint/60">
             <input type="radio" name="amount" value="{{ p }}" class="sr-only" {% if forloop.first %}checked{% endif %}>
             <span class="num block text-base font-semibold text-mist">{{ p|intcomma }}</span>
             <span class="block text-[10px] uppercase tracking-[0.16em] text-mist-faint">SS</span>

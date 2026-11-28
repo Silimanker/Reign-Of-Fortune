@@ -29,14 +29,12 @@
             <p class="num mt-1 text-lg text-mist">1 SS = &#8369;1.00</p>
           </div>
           <div>
-            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Free spins</p>
-            <p class="num mt-1 text-lg text-mist">{{ player.free_spins }}</p>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Heaven's Favor</p>
+            <p class="num mt-1 text-lg {% if player.favor_percent %}text-gold-lt{% else %}text-mist{% endif %}">{{ player.favor_percent }}%</p>
           </div>
           <div>
-            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Fortune Charm</p>
-            <p class="mt-1 text-lg {% if player.charm_active %}text-gold-lt{% else %}text-mist{% endif %}">
-              {% if player.charm_active %}Ready &middot; 2&times;{% else %}None{% endif %}
-            </p>
+            <p class="text-[11px] uppercase tracking-[0.18em] text-mist-faint">Grid</p>
+            <p class="mt-1 text-lg text-mist">6&times;5 scatter</p>
           </div>
         </div>
 
