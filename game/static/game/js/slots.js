@@ -375,12 +375,12 @@
   }
 
   /* A quiet floating receipt, reserved for wins worth interrupting for:
-     a bonus, a long cascade chain, or a payout of ten stakes or more.
+     a bonus, a long cascade chain, or a payout of five stakes or more.
      Ordinary wins already get the inline banner. */
   function showWinPopup(data) {
     var notable = Boolean(data.feature)
       || Number(data.cascades) >= 3
-      || Number(data.payout) >= Number(data.stake) * 10;
+      || Number(data.payout) >= Number(data.stake) * 5;
     if (!winPopup || !data.win || !notable) {
       hideWinPopup();
       return;
