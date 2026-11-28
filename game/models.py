@@ -100,3 +100,11 @@ class GameRound(models.Model):
 
     def __str__(self) -> str:
         return f"{self.mode_name} -> {self.result_name} ({'win' if self.is_win else 'loss'})"
+
+    @property
+    def result_icon(self) -> str:
+        """Icon filename for ``result_key``, or "" when the symbol has none."""
+        from . import slots  # local import: slots must not import models
+
+        symbol = slots.SYMBOL_BY_KEY.get(self.result_key)
+        return symbol.icon if symbol else ""

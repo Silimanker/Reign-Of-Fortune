@@ -115,7 +115,7 @@
         <ul class="mt-4 grid gap-2 sm:grid-cols-2">
           {% for r in recent %}
           <li class="flex items-center gap-3 rounded-lg border border-line/70 bg-ink-2/70 px-3 py-2">
-            <img src="{% static 'game/icons/' %}{{ r.result_key }}.png" alt="" class="h-7 w-7 object-contain" onerror="this.style.opacity='0'">
+            {% if r.result_icon %}<img src="{% static 'game/icons/' %}{{ r.result_icon }}" alt="" class="h-7 w-7 object-contain">{% endif %}
             <span class="min-w-0 flex-1 truncate text-sm text-mist">{{ r.mode_name }}</span>
             <span class="num text-xs {% if r.is_win %}text-jade{% else %}text-mist-faint{% endif %}">
               {% if r.is_win %}+{{ r.payout|intcomma }}{% else %}-{{ r.stake|intcomma }}{% endif %}
