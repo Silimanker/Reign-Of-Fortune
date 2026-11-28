@@ -368,6 +368,44 @@
     step();
   }
 
+  function hideWinPopup() {
+    window.clearTimeout(winPopupTimer);
+    winPopupTimer = null;
+    if (winPopup) winPopup.classList.remove("is-visible");
+  }
+
+  /* A quiet floating receipt, reserved for wins worth interrupting for:
+     a bonus, a long cascade chain, or a payout of ten stakes or more.
+     Ordinary wins already get the inline banner. */
+  function showWinPopup(data) {
+    var notable = Boolean(data.feature)
+      || Number(data.cascades) >= 3
+      || Number(data.payout) >= Number(data.stake) * 10;
+    if (!winPopup || !data.win || !notable) {
+      hideWinPopup();
+      return;
+    }
+
+    winPopupLabel.textContent = data.feature
+      ? "Heavenly Tribulation"
+      : data.cascades > 1 ? "Cascade win" : "Win";
+    winPopupAmount.textContent = "+" + money(data.payout) + " SS";
+
+    var meta = [];
+    if (data.cascades > 1) meta.push(data.cascades + " cascades");
+    if (Number(data.favorBoost) > 0) {
+      meta.push("Favor +" + Math.round(Number(data.favorBoost) * 100) + "%");
+    }
+    winPopupMeta.textContent = meta.join(" \u00b7 ");
+
+    winPopup.classList.remove("is-visible");
+    void winPopup.offsetWidth;
+    winPopup.classList.add("is-visible");
+
+    window.clearTimeout(winPopupTimer);
+    winPopupTimer = window.setTimeout(hideWinPopup, 2600);
+  }
+
   function showBanners(data) {
     if (data.win) {
       winBanner.classList.remove("hidden");
@@ -381,10 +419,12 @@
       cascadeLabel.textContent = data.cascades > 1
         ? data.cascades + " cascades"
         : "";
+      showWinPopup(data);
     } else {
       winBanner.classList.add("hidden");
       lossBanner.classList.remove("hidden");
       lossMsg.textContent = data.message;
+      hideWinPopup();
     }
 
     /* Bounce-in animation */
@@ -465,6 +505,7 @@
     lossBanner.classList.add("hidden");
     featurePanel.classList.add("hidden");
     bonusBar.classList.add("hidden");
+    hideWinPopup();
     updatePips(0);
     eventAlert.classList.add("hidden");
 
