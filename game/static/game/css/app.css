@@ -34,6 +34,7 @@
     --leading-tight: 1.25;
     --leading-snug: 1.375;
     --leading-relaxed: 1.625;
+    --radius-sm: 0.25rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
@@ -45,20 +46,20 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-ink: #0b0c10;
-    --color-ink-2: #101219;
-    --color-ink-3: #161923;
-    --color-ink-4: #1d212d;
-    --color-line: #2a2f3d;
-    --color-mist: #e8eaef;
-    --color-mist-dim: #a2a9b7;
-    --color-mist-faint: #737b8c;
-    --color-gold: #e0aa3e;
-    --color-gold-lt: #f3d083;
-    --color-gold-dk: #9a7220;
-    --color-jade: #45c393;
-    --color-ember: #d9604a;
-    --color-violet: #9d7bf0;
+    --color-ink: #f0e5cd;
+    --color-ink-2: #f7efdd;
+    --color-ink-3: #fffaf0;
+    --color-ink-4: #e5d4b2;
+    --color-line: #c9b58d;
+    --color-mist: #2d2114;
+    --color-mist-dim: #5b4a33;
+    --color-mist-faint: #827056;
+    --color-gold: #8b5e14;
+    --color-gold-lt: #a06c1c;
+    --color-gold-dk: #62400a;
+    --color-jade: #2e6f56;
+    --color-ember: #a33a26;
+    --color-violet: #6b4a8b;
     --font-display: "Cormorant Garamond", "Cinzel", "Trajan Pro", Georgia, serif;
     --font-xianxia: "Ma Shan Zheng", "STKaiti", "KaiTi", serif;
     --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
@@ -290,8 +291,14 @@
   .z-\[60\] {
     z-index: 60;
   }
+  .order-3 {
+    order: 3;
+  }
   .col-span-full {
     grid-column: 1 / -1;
+  }
+  .-mx-4 {
+    margin-inline: calc(var(--spacing) * -4);
   }
   .mx-auto {
     margin-inline: auto;
@@ -356,6 +363,9 @@
   .hidden {
     display: none;
   }
+  .inline {
+    display: inline;
+  }
   .inline-block {
     display: inline-block;
   }
@@ -407,6 +417,9 @@
   .min-h-10 {
     min-height: calc(var(--spacing) * 10);
   }
+  .min-h-16 {
+    min-height: calc(var(--spacing) * 16);
+  }
   .min-h-\[100dvh\] {
     min-height: 100dvh;
   }
@@ -445,6 +458,9 @@
   }
   .w-\[112px\] {
     width: 112px;
+  }
+  .w-\[calc\(100\%\+2rem\)\] {
+    width: calc(100% + 2rem);
   }
   .w-full {
     width: 100%;
@@ -534,9 +550,6 @@
   .justify-end {
     justify-content: flex-end;
   }
-  .gap-1 {
-    gap: var(--spacing);
-  }
   .gap-1\.5 {
     gap: calc(var(--spacing) * 1.5);
   }
@@ -579,6 +592,9 @@
   .gap-x-4 {
     column-gap: calc(var(--spacing) * 4);
   }
+  .gap-x-6 {
+    column-gap: calc(var(--spacing) * 6);
+  }
   :where(.-space-x-2 > :not(:last-child)) {
     --tw-space-x-reverse: 0;
     margin-inline-start: calc(calc(var(--spacing) * -2) * var(--tw-space-x-reverse));
@@ -595,7 +611,7 @@
     border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   }
   :where(.divide-line\/70 > :not(:last-child)) {
-    border-color: color-mix(in srgb, #2a2f3d 70%, transparent);
+    border-color: color-mix(in srgb, #c9b58d 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-line) 70%, transparent);
     }
@@ -623,6 +639,9 @@
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
+  .rounded-sm {
+    border-radius: var(--radius-sm);
+  }
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
@@ -633,6 +652,10 @@
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
+  }
+  .border-t {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 1px;
   }
   .border-t-2 {
     border-top-style: var(--tw-border-style);
@@ -647,43 +670,43 @@
     border-style: dashed;
   }
   .\!border-ember\/50 {
-    border-color: color-mix(in srgb, #d9604a 50%, transparent) !important;
+    border-color: color-mix(in srgb, #a33a26 50%, transparent) !important;
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-ember) 50%, transparent) !important;
     }
   }
   .\!border-jade\/50 {
-    border-color: color-mix(in srgb, #45c393 50%, transparent) !important;
+    border-color: color-mix(in srgb, #2e6f56 50%, transparent) !important;
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-jade) 50%, transparent) !important;
     }
   }
   .\!border-violet\/50 {
-    border-color: color-mix(in srgb, #9d7bf0 50%, transparent) !important;
+    border-color: color-mix(in srgb, #6b4a8b 50%, transparent) !important;
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-violet) 50%, transparent) !important;
     }
   }
   .border-ember\/40 {
-    border-color: color-mix(in srgb, #d9604a 40%, transparent);
+    border-color: color-mix(in srgb, #a33a26 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-ember) 40%, transparent);
     }
   }
   .border-gold\/40 {
-    border-color: color-mix(in srgb, #e0aa3e 40%, transparent);
+    border-color: color-mix(in srgb, #8b5e14 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-gold) 40%, transparent);
     }
   }
   .border-jade\/40 {
-    border-color: color-mix(in srgb, #45c393 40%, transparent);
+    border-color: color-mix(in srgb, #2e6f56 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-jade) 40%, transparent);
     }
   }
   .border-jade\/50 {
-    border-color: color-mix(in srgb, #45c393 50%, transparent);
+    border-color: color-mix(in srgb, #2e6f56 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-jade) 50%, transparent);
     }
@@ -691,53 +714,62 @@
   .border-line {
     border-color: var(--color-line);
   }
+  .border-line\/40 {
+    border-color: color-mix(in srgb, #c9b58d 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-line) 40%, transparent);
+    }
+  }
   .border-line\/50 {
-    border-color: color-mix(in srgb, #2a2f3d 50%, transparent);
+    border-color: color-mix(in srgb, #c9b58d 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-line) 50%, transparent);
     }
   }
   .border-line\/60 {
-    border-color: color-mix(in srgb, #2a2f3d 60%, transparent);
+    border-color: color-mix(in srgb, #c9b58d 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-line) 60%, transparent);
     }
   }
   .border-line\/70 {
-    border-color: color-mix(in srgb, #2a2f3d 70%, transparent);
+    border-color: color-mix(in srgb, #c9b58d 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-line) 70%, transparent);
     }
   }
   .border-line\/80 {
-    border-color: color-mix(in srgb, #2a2f3d 80%, transparent);
+    border-color: color-mix(in srgb, #c9b58d 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-line) 80%, transparent);
     }
   }
   .border-mist-faint\/40 {
-    border-color: color-mix(in srgb, #737b8c 40%, transparent);
+    border-color: color-mix(in srgb, #827056 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-mist-faint) 40%, transparent);
     }
   }
   .border-violet\/30 {
-    border-color: color-mix(in srgb, #9d7bf0 30%, transparent);
+    border-color: color-mix(in srgb, #6b4a8b 30%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-violet) 30%, transparent);
     }
   }
   .border-violet\/50 {
-    border-color: color-mix(in srgb, #9d7bf0 50%, transparent);
+    border-color: color-mix(in srgb, #6b4a8b 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-violet) 50%, transparent);
     }
+  }
+  .bg-\[rgba\(47\,33\,17\,\.46\)\] {
+    background-color: rgba(47,33,17,.46);
   }
   .bg-ember {
     background-color: var(--color-ember);
   }
   .bg-ember\/10 {
-    background-color: color-mix(in srgb, #d9604a 10%, transparent);
+    background-color: color-mix(in srgb, #a33a26 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-ember) 10%, transparent);
     }
@@ -746,7 +778,7 @@
     background-color: var(--color-gold);
   }
   .bg-gold\/10 {
-    background-color: color-mix(in srgb, #e0aa3e 10%, transparent);
+    background-color: color-mix(in srgb, #8b5e14 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-gold) 10%, transparent);
     }
@@ -755,13 +787,13 @@
     background-color: var(--color-ink-2);
   }
   .bg-ink-2\/60 {
-    background-color: color-mix(in srgb, #101219 60%, transparent);
+    background-color: color-mix(in srgb, #f7efdd 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-ink-2) 60%, transparent);
     }
   }
   .bg-ink-2\/70 {
-    background-color: color-mix(in srgb, #101219 70%, transparent);
+    background-color: color-mix(in srgb, #f7efdd 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-ink-2) 70%, transparent);
     }
@@ -770,52 +802,52 @@
     background-color: var(--color-ink-3);
   }
   .bg-ink-3\/60 {
-    background-color: color-mix(in srgb, #161923 60%, transparent);
+    background-color: color-mix(in srgb, #fffaf0 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-ink-3) 60%, transparent);
     }
   }
   .bg-ink-3\/70 {
-    background-color: color-mix(in srgb, #161923 70%, transparent);
+    background-color: color-mix(in srgb, #fffaf0 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-ink-3) 70%, transparent);
-    }
-  }
-  .bg-ink-3\/80 {
-    background-color: color-mix(in srgb, #161923 80%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-ink-3) 80%, transparent);
     }
   }
   .bg-ink-4 {
     background-color: var(--color-ink-4);
   }
-  .bg-ink\/85 {
-    background-color: color-mix(in srgb, #0b0c10 85%, transparent);
+  .bg-ink\/90 {
+    background-color: color-mix(in srgb, #f0e5cd 90%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-ink) 85%, transparent);
+      background-color: color-mix(in oklab, var(--color-ink) 90%, transparent);
     }
   }
   .bg-jade {
     background-color: var(--color-jade);
   }
   .bg-jade\/10 {
-    background-color: color-mix(in srgb, #45c393 10%, transparent);
+    background-color: color-mix(in srgb, #2e6f56 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-jade) 10%, transparent);
+    }
+  }
+  .bg-line\/50 {
+    background-color: color-mix(in srgb, #c9b58d 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-line) 50%, transparent);
     }
   }
   .bg-violet {
     background-color: var(--color-violet);
   }
   .bg-violet\/8 {
-    background-color: color-mix(in srgb, #9d7bf0 8%, transparent);
+    background-color: color-mix(in srgb, #6b4a8b 8%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-violet) 8%, transparent);
     }
   }
   .bg-violet\/10 {
-    background-color: color-mix(in srgb, #9d7bf0 10%, transparent);
+    background-color: color-mix(in srgb, #6b4a8b 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-violet) 10%, transparent);
     }
@@ -882,6 +914,9 @@
   }
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
+  }
+  .py-1 {
+    padding-block: var(--spacing);
   }
   .py-1\.5 {
     padding-block: calc(var(--spacing) * 1.5);
@@ -1076,17 +1111,20 @@
   .text-gold {
     color: var(--color-gold);
   }
+  .text-gold-dk {
+    color: var(--color-gold-dk);
+  }
   .text-gold-lt {
     color: var(--color-gold-lt);
   }
   .text-gold\/80 {
-    color: color-mix(in srgb, #e0aa3e 80%, transparent);
+    color: color-mix(in srgb, #8b5e14 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-gold) 80%, transparent);
     }
   }
   .text-gold\/85 {
-    color: color-mix(in srgb, #e0aa3e 85%, transparent);
+    color: color-mix(in srgb, #8b5e14 85%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-gold) 85%, transparent);
     }
@@ -1095,7 +1133,7 @@
     color: var(--color-jade);
   }
   .text-jade\/80 {
-    color: color-mix(in srgb, #45c393 80%, transparent);
+    color: color-mix(in srgb, #2e6f56 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-jade) 80%, transparent);
     }
@@ -1133,8 +1171,8 @@
     --tw-shadow: 0 0 8px var(--tw-shadow-color, rgba(157,123,240,.9));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .shadow-\[0_0_10px_rgba\(69\,195\,147\,\.9\)\] {
-    --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(69,195,147,.9));
+  .shadow-\[0_0_10px_rgba\(46\,111\,86\,\.55\)\] {
+    --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(46,111,86,.55));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .ring {
@@ -1171,10 +1209,6 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
-  .duration-200 {
-    --tw-duration: 200ms;
-    transition-duration: 200ms;
-  }
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
@@ -1198,11 +1232,11 @@
       --tw-scale-z: 110%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
-    :is(:where(.group):hover .group-hover\:text-gold-lt) {
-      color: var(--color-gold-lt);
+    :is(:where(.group):hover .group-hover\:text-gold-dk) {
+      color: var(--color-gold-dk);
     }
     .hover\:border-gold\/50:hover {
-      border-color: color-mix(in srgb, #e0aa3e 50%, transparent);
+      border-color: color-mix(in srgb, #8b5e14 50%, transparent);
     }
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:border-gold\/50:hover {
@@ -1210,7 +1244,7 @@
       }
     }
     .hover\:border-gold\/60:hover {
-      border-color: color-mix(in srgb, #e0aa3e 60%, transparent);
+      border-color: color-mix(in srgb, #8b5e14 60%, transparent);
     }
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:border-gold\/60:hover {
@@ -1218,7 +1252,7 @@
       }
     }
     .hover\:border-mist-faint\/60:hover {
-      border-color: color-mix(in srgb, #737b8c 60%, transparent);
+      border-color: color-mix(in srgb, #827056 60%, transparent);
     }
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:border-mist-faint\/60:hover {
@@ -1242,7 +1276,7 @@
     border-color: var(--color-gold);
   }
   .has-\[\:checked\]\:bg-gold\/12:has(:is(:checked)) {
-    background-color: color-mix(in srgb, #e0aa3e 12%, transparent);
+    background-color: color-mix(in srgb, #8b5e14 12%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-gold) 12%, transparent);
     }
@@ -1250,11 +1284,14 @@
   .has-\[\:checked\]\:text-gold-lt:has(:is(:checked)) {
     color: var(--color-gold-lt);
   }
-  .has-\[\:checked\]\:shadow-\[0_0_0_1px_rgba\(224\,170\,62\,\.45\)\]:has(:is(:checked)) {
-    --tw-shadow: 0 0 0 1px var(--tw-shadow-color, rgba(224,170,62,.45));
+  .has-\[\:checked\]\:shadow-\[0_0_0_1px_rgba\(139\,94\,20\,\.45\)\]:has(:is(:checked)) {
+    --tw-shadow: 0 0 0 1px var(--tw-shadow-color, rgba(139,94,20,.45));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   @media (width >= 40rem) {
+    .sm\:col-span-2 {
+      grid-column: span 2 / span 2;
+    }
     .sm\:block {
       display: block;
     }
@@ -1318,11 +1355,30 @@
     }
   }
   @media (width >= 48rem) {
-    .md\:flex {
-      display: flex;
+    .md\:order-none {
+      order: 0;
+    }
+    .md\:mx-0 {
+      margin-inline: 0px;
+    }
+    .md\:w-auto {
+      width: auto;
+    }
+    .md\:border-t-0 {
+      border-top-style: var(--tw-border-style);
+      border-top-width: 0px;
+    }
+    .md\:px-0 {
+      padding-inline: 0px;
+    }
+    .md\:py-0 {
+      padding-block: 0px;
     }
   }
   @media (width >= 64rem) {
+    .lg\:col-span-1 {
+      grid-column: span 1 / span 1;
+    }
     .lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -1399,12 +1455,12 @@
     background-color: var(--color-ink);
     color: var(--color-mist);
     font-family: var(--font-sans);
-    background-image: radial-gradient(1100px 620px at 78% -12%, rgba(224, 170, 62, 0.09), transparent 62%), radial-gradient(900px 520px at 6% 104%, rgba(69, 195, 147, 0.07), transparent 60%);
+    background-image: radial-gradient(1100px 640px at 16% -12%, rgba(255, 252, 242, 0.92), transparent 64%), radial-gradient(900px 520px at 92% 2%, rgba(162, 112, 35, 0.11), transparent 66%), radial-gradient(760px 480px at 4% 108%, rgba(46, 111, 86, 0.06), transparent 62%), repeating-linear-gradient(0deg, rgba(93, 65, 28, 0.022) 0 1px, transparent 1px 4px);
     background-attachment: fixed;
   }
   ::selection {
-    background: rgba(224, 170, 62, 0.3);
-    color: #fff;
+    background: rgba(139, 94, 20, 0.22);
+    color: var(--color-mist);
   }
   :focus-visible {
     outline: 2px solid var(--color-gold);
@@ -1419,7 +1475,7 @@
     text-transform: uppercase;
   }
   .gold-text {
-    background: linear-gradient(178deg, #fff3d4 6%, #e0aa3e 44%, #a97b22 74%, #f3d083 100%);
+    background: linear-gradient(178deg, #5e3b0a 6%, #8b5e14 44%, #b4822b 74%, #6b450c 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -1430,22 +1486,25 @@
     letter-spacing: -0.01em;
   }
   .panel {
-    background: linear-gradient(168deg, rgba(29, 33, 45, 0.92), rgba(16, 18, 25, 0.94));
-    border: 1px solid var(--color-line);
-    border-radius: 16px;
-    box-shadow: 0 24px 48px -32px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    background: linear-gradient(168deg, rgba(255, 251, 242, 0.96), rgba(247, 238, 220, 0.98)), repeating-linear-gradient(90deg, rgba(103, 74, 31, 0.018) 0 1px, transparent 1px 5px);
+    border: 1px solid rgba(151, 121, 75, 0.42);
+    border-radius: 14px;
+    box-shadow: 0 22px 42px -34px rgba(72, 48, 17, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.92);
   }
   .rule {
     border-top: 1px solid var(--color-line);
   }
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 999px;
+    border-radius: 3px;
+    font-family: var(--font-serif);
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     transition: transform 0.16s var(--ease-silk), background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
     cursor: pointer;
     white-space: nowrap;
@@ -1459,37 +1518,41 @@
     transform: none;
   }
   .btn-gold {
-    background: linear-gradient(180deg, #f3d083, #d99f31 58%, #b8842a);
-    color: #14100a;
-    box-shadow: 0 12px 28px -16px rgba(224, 170, 62, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(103, 68, 14, 0.52);
+    background: linear-gradient(180deg, #e4c47e, #c08a2e 58%, #9d6b1d);
+    color: #2d1b06;
+    box-shadow: 0 12px 24px -18px rgba(90, 58, 14, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.55);
   }
   .btn-gold:hover:not(:disabled) {
-    box-shadow: 0 16px 34px -14px rgba(224, 170, 62, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    background: linear-gradient(180deg, #efd394, #c9973c 58%, #aa781f);
+    box-shadow: 0 16px 30px -16px rgba(90, 58, 14, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.65);
   }
   .btn-ghost {
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid var(--color-line);
-    color: var(--color-mist);
+    border: 1px solid rgba(151, 121, 75, 0.48);
+    background: rgba(255, 251, 242, 0.52);
+    color: var(--color-mist-dim);
   }
   .btn-ghost:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.075);
-    border-color: #3b4354;
+    border-color: rgba(139, 94, 20, 0.62);
+    background: rgba(255, 250, 239, 0.92);
+    color: var(--color-gold-dk);
   }
   .field {
     width: 100%;
-    background: rgba(11, 12, 16, 0.75);
+    background: rgba(255, 251, 242, 0.76);
     border: 1px solid var(--color-line);
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 0.7rem 0.9rem;
     color: var(--color-mist);
-    transition: border-color 0.16s ease, background-color 0.16s ease;
+    transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
   }
   .field::placeholder {
     color: var(--color-mist-faint);
   }
   .field:focus {
     border-color: var(--color-gold);
-    background: rgba(11, 12, 16, 0.95);
+    background: #fffaf0;
+    box-shadow: 0 0 0 3px rgba(139, 94, 20, 0.1);
     outline: none;
   }
   .label {
@@ -1502,55 +1565,61 @@
     margin-bottom: 0.4rem;
   }
   .chip {
-    border: 1px solid var(--color-line);
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 999px;
-    padding: 0.34rem 0.72rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-mist-dim);
-    transition: all 0.16s ease;
-  }
-  .chip-gold {
-    border-color: rgba(224, 170, 62, 0.5);
-    color: var(--color-gold-lt);
-    background: rgba(224, 170, 62, 0.1);
-  }
-  .tab {
-    border-radius: 999px;
-    padding: 0.55rem 0.25rem;
-    font-size: 0.72rem;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(151, 121, 75, 0.4);
+    background: rgba(255, 251, 242, 0.52);
+    border-radius: 2px;
+    padding: 0.3rem 0.58rem;
+    font-family: var(--font-serif);
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--color-mist-dim);
+    transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+  }
+  .chip-gold {
+    border-color: rgba(139, 94, 20, 0.55);
+    color: var(--color-gold-dk);
+    background: rgba(139, 94, 20, 0.08);
+  }
+  .tab {
+    border-bottom: 1px solid transparent;
+    border-radius: 0;
+    padding: 0.55rem 0.25rem;
+    font-family: var(--font-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--color-mist-faint);
-    transition: color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+    transition: color 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
     cursor: pointer;
   }
   .tab:hover {
     color: var(--color-mist);
   }
   .tab.is-on {
-    background: linear-gradient(180deg, #f3d083, #d99f31);
-    color: #14100a;
-    box-shadow: 0 8px 18px -12px rgba(224, 170, 62, 0.95);
+    background: rgba(139, 94, 20, 0.06);
+    border-color: var(--color-gold);
+    color: var(--color-gold-dk);
   }
   .bet-opt {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     text-align: left;
-    border: 1px solid var(--color-line);
-    background: rgba(22, 25, 35, 0.55);
-    border-radius: 12px;
+    border: 1px solid rgba(151, 121, 75, 0.4);
+    background: rgba(255, 251, 242, 0.52);
+    border-radius: 4px;
     padding: 0.5rem 0.6rem;
     transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s var(--ease-silk);
     cursor: pointer;
   }
   .bet-opt:hover:not(:disabled) {
-    border-color: #3d4658;
-    background: rgba(29, 33, 45, 0.85);
+    border-color: rgba(139, 94, 20, 0.55);
+    background: rgba(255, 250, 239, 0.9);
   }
   .bet-opt:active:not(:disabled) {
     transform: scale(0.985);
@@ -1564,8 +1633,8 @@
   }
   .bet-opt.is-on {
     border-color: var(--color-gold);
-    background: rgba(224, 170, 62, 0.12);
-    box-shadow: inset 0 0 0 1px rgba(224, 170, 62, 0.4);
+    background: rgba(139, 94, 20, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(139, 94, 20, 0.22);
   }
   .opt-icon {
     width: 34px;
@@ -1583,9 +1652,167 @@
     border: 1px solid var(--color-line);
     background: var(--color-ink-3);
   }
+  .brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .brand-seal {
+    display: grid;
+    width: 1.95rem;
+    height: 1.95rem;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid rgba(139, 94, 20, 0.55);
+    background: rgba(255, 250, 240, 0.55);
+    box-shadow: inset 0 0 0 2px rgba(255, 250, 240, 0.45);
+    color: var(--color-ember);
+    font-family: var(--font-xianxia);
+    font-size: 1.15rem;
+    line-height: 1;
+    transform: rotate(-2deg);
+  }
+  .site-nav {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .site-nav-link {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0.42rem 0.85rem;
+    border-left: 1px solid rgba(151, 121, 75, 0.3);
+    color: var(--color-mist-faint);
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.16s ease, background-color 0.16s ease;
+  }
+  .site-nav-link:first-child {
+    border-left: 0;
+  }
+  .site-nav-link:hover {
+    background: rgba(139, 94, 20, 0.05);
+    color: var(--color-mist);
+  }
+  .site-nav-link.is-active {
+    color: var(--color-gold-dk);
+  }
+  .site-nav-link.is-active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0.85rem;
+    right: 0.85rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  }
+  .text-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0;
+    border-bottom: 1px solid rgba(151, 121, 75, 0.35);
+  }
+  .text-tab {
+    position: relative;
+    padding: 0.65rem 1rem;
+    color: var(--color-mist-faint);
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: color 0.16s ease;
+  }
+  .text-tab:hover {
+    color: var(--color-mist);
+  }
+  .text-tab.is-active {
+    color: var(--color-gold-dk);
+  }
+  .text-tab.is-active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 1rem;
+    right: 1rem;
+    height: 2px;
+    background: var(--color-gold);
+  }
+}
+.win-popup {
+  position: fixed;
+  top: clamp(5.6rem, 9vh, 7.5rem);
+  left: 50%;
+  z-index: 70;
+  width: min(92vw, 28rem);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -14px) scale(0.96);
+  transition: opacity 0.18s ease, transform 0.28s var(--ease-silk);
+}
+.win-popup.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+.win-popup-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1.05rem;
+  border: 1px solid rgba(139, 94, 20, 0.5);
+  background: linear-gradient(180deg, rgba(255, 251, 241, 0.98), rgba(247, 232, 201, 0.98)), repeating-linear-gradient(90deg, rgba(103, 74, 31, 0.02) 0 1px, transparent 1px 5px);
+  box-shadow: 0 20px 42px -24px rgba(63, 40, 10, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+.win-popup-seal {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgba(163, 58, 38, 0.5);
+  color: var(--color-ember);
+  font-family: var(--font-xianxia);
+  font-size: 1.2rem;
+  line-height: 1;
+  transform: rotate(-2deg);
+}
+.win-popup-label {
+  color: var(--color-mist-faint);
+  font-family: var(--font-serif);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.win-popup-amount {
+  color: var(--color-jade);
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1;
+}
+.win-popup-meta {
+  margin-left: auto;
+  color: var(--color-mist-faint);
+  font-family: var(--font-serif);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-align: right;
+  text-transform: uppercase;
 }
 .slot-cell {
-  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.25s ease;
+  border: 1px solid rgba(151, 121, 75, 0.32);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255, 252, 245, 0.92), rgba(244, 232, 208, 0.88));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.25s ease, border-color 0.18s ease, background-color 0.18s ease;
 }
 .slot-cell.slot-win {
   transform: scale(1.04);
@@ -1738,22 +1965,6 @@
   line-height: 1;
   text-transform: uppercase;
 }
-.splash-edition {
-  color: rgba(67, 42, 12, 0.66);
-  font-family: var(--font-serif);
-  font-size: 0.64rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  line-height: 1.45;
-  text-align: right;
-  text-transform: uppercase;
-}
-.splash-edition span {
-  display: block;
-  color: rgba(67, 42, 12, 0.48);
-  font-weight: 500;
-  letter-spacing: 0.24em;
-}
 .splash-couplet {
   position: absolute;
   top: 50%;
@@ -1791,7 +2002,7 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  color: rgba(79, 48, 11, 0.72);
+  color: rgba(57, 34, 6, 0.86);
   font-family: var(--font-serif);
   font-size: clamp(0.64rem, 1.1vw, 0.78rem);
   font-weight: 600;
@@ -1809,36 +2020,38 @@
 }
 .splash-title {
   margin-top: clamp(1rem, 2.4vh, 1.8rem);
-  color: #432807;
+  color: #301c05;
   font-family: var(--font-serif);
-  line-height: 0.8;
+  line-height: 0.92;
 }
 .splash-title-main {
   display: block;
   font-size: clamp(5rem, 15vw, 11.5rem);
   font-weight: 500;
   letter-spacing: -0.02em;
-  line-height: 0.78;
+  line-height: 0.9;
+  padding-bottom: 0.06em;
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .splash-title-main {
-    background: linear-gradient(180deg, #2f1d06 0%, #5a350b 28%, #9f6a1c 52%, #e3bd6a 68%, #5c360c 100%);
+    background: linear-gradient(180deg, #241504 0%, #462806 30%, #72460f 54%, #9a671c 72%, #432706 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 1px 0 rgba(255, 247, 222, 0.38)) drop-shadow(0 12px 26px rgba(75, 43, 7, 0.2));
+    filter: drop-shadow(0 0 16px rgba(255, 249, 230, 0.36)) drop-shadow(0 2px 0 rgba(255, 247, 222, 0.34)) drop-shadow(0 10px 24px rgba(58, 32, 4, 0.24));
   }
 }
 .splash-title-sub {
   display: block;
-  margin-top: 0.18em;
-  color: rgba(59, 35, 7, 0.84);
+  margin-top: 0.4em;
+  color: #3a2205;
   font-size: clamp(1.05rem, 3vw, 1.85rem);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.48em;
   line-height: 1.2;
   text-indent: 0.48em;
   text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 248, 228, 0.45);
 }
 .splash-divider {
   display: flex;
@@ -1865,12 +2078,13 @@
 }
 .splash-lede {
   max-width: 46ch;
-  color: rgba(60, 36, 8, 0.84);
+  color: rgba(40, 23, 4, 0.95);
   font-family: var(--font-serif);
   font-size: clamp(1.08rem, 1.8vw, 1.38rem);
   font-style: italic;
   line-height: 1.55;
   text-wrap: balance;
+  text-shadow: 0 1px 2px rgba(255, 250, 232, 0.92), 0 0 14px rgba(255, 250, 232, 0.72), 0 0 32px rgba(255, 248, 226, 0.45);
 }
 .splash-actions {
   display: flex;
@@ -1926,7 +2140,7 @@
 .splash-link {
   padding-bottom: 0.14rem;
   border-bottom: 1px solid transparent;
-  color: rgba(64, 39, 8, 0.64);
+  color: rgba(54, 32, 5, 0.8);
   font-family: var(--font-serif);
   font-size: 0.74rem;
   font-weight: 600;
@@ -1947,12 +2161,13 @@
   justify-content: center;
   gap: 0.75rem 1.35rem;
   padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(24px, 4vw, 44px);
-  color: rgba(56, 33, 7, 0.62);
+  color: rgba(44, 25, 3, 0.9);
   font-family: var(--font-serif);
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(255, 250, 232, 0.8);
 }
 .splash-foot i {
   font-style: normal;
@@ -1986,11 +2201,6 @@
   .splash-top {
     align-items: flex-start;
     padding-inline: 22px;
-  }
-  .splash-edition {
-    max-width: 8.5rem;
-    font-size: 0.56rem;
-    letter-spacing: 0.22em;
   }
   .splash-brand-name {
     font-size: 0.7rem;
